@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/luca'
+let g:netrw_dirhist_2='/media/sf_Polito/Magistrale/Microelectronic systems/DLX/a.a-DataPath.core'
+let g:netrw_dirhist_3='/media/sf_Polito/Magistrale/Microelectronic systems/DLX'
+let g:netrw_dirhist_4='/media/sf_Polito/Magistrale/Microelectronic systems/DLX/a.a-DataPath.core'
