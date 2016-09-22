@@ -1,3 +1,4 @@
 # vimrc
 
-My vim configuration files ready to be used
+My vim configuration files. To install:
+    sh install.sh
