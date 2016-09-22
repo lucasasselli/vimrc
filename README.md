@@ -1,1 +1,3 @@
-My vimrc file and vim folder
+# vimrc
+
+My vim configuration files ready to be used
