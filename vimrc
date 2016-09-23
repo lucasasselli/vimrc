@@ -8,6 +8,7 @@ Plugin 'The-NERD-tree'
 Plugin 'ervandew/supertab'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'majutsushi/tagbar'
+Plugin 'JPR75/vip'
 filetype plugin indent on " required! 
 
 " Tagbar
