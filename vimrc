@@ -1,19 +1,15 @@
 set nocompatible " be iMproved
+
 filetype off " required!
 
 " Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
 Plugin 'The-NERD-tree'
-Plugin 'ervandew/supertab'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'majutsushi/tagbar'
 Plugin 'JPR75/vip'
+Plugin 'stevearc/vim-arduino'
 filetype plugin indent on " required! 
-
-" Tagbar
-let g:tagbar_width = 30
-let g:tagbar_autofocus = 1
 
 " NerdTree 
 let g:NERDTreeChDirMode = 1
@@ -23,7 +19,7 @@ let g:NERDTreeHijackNetrw = 1
 syntax enable
 
 if (has('gui_running'))
-        
+    " Set font
     set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline
 
     " Remove gvim GUI
@@ -35,9 +31,9 @@ if (has('gui_running'))
     " Use Solarized theme
     set background=dark
     colorscheme solarized
-
 endif
 
+set path+=**
 set wildmenu " Command line completion
 set showcmd " Show partial commands
 set ignorecase " Ignore case in searches...
@@ -68,13 +64,11 @@ nnoremap <Down> :echoe "Use j"<CR>
 
 " Key mappings
 map <F1> :NERDTreeToggle<CR>
-map <F2> :TagbarToggle<CR>
-map <F3> :call QuickfixToggle()<CR>
+map <F2> :call QuickfixToggle()<CR>
 map <F5> :w<CR>:make<CR>
 map <F6> :cprev<CR>
 map <F7> :cnext<CR>
-map <F11> mz<bar> :call ClearWhitespace()<CR><bar> gg=G'z 
-map <F12> :vimgrep TODO **/*.*<CR>:call QuickfixToggle()<CR> 
+map <F12> mz<bar> :call ClearWhitespace()<CR><bar> gg=G'z 
 map <C-p> "+P
 map <C-c> "+y
 
@@ -90,23 +84,13 @@ set undofile
 set undolevels=1000
 set undoreload=10000
 
-" VHDL
-let g:vhdl_indent_genportmap=0
-let g:tagbar_type_vhdl = {
-            \ 'ctagstype': 'vhdl',
-            \ 'kinds' : [
-            \'e:entities',
-            \'a:architectures',
-            \'T:subtypes',
-            \'t:types',
-            \'c:constants',
-            \'s:signals',
-            \'x:processes',
-            \'C:components',
-            \'f:functions',
-            \'v:variables',
-            \]
-            \}
+" .swp in one folder
+:set directory=~/.vim/swap/
+
+" Enable syntax completion
+if exists("+omnifunc")
+    setlocal omnifunc=syntaxcomplete#Complete
+endif
 
 " Functions
 function ClearWhitespace()
@@ -124,3 +108,13 @@ function! QuickfixToggle()
         let g:quickfix_is_open = 1
     endif
 endfunction
+
+"Use TAB to complete when typing words, else inserts TABs as usual.
+function! Tab_Or_Complete()
+  if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
+    return "\<C-N>"
+  else
+    return "\<Tab>"
+  endif
+endfunction
+:inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
