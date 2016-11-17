@@ -26,8 +26,7 @@ function GetMasmIndent()
     let line = getline(v:lnum)
 
     for instr in instr_list
-        let query = '^\s*' . instr
-        echomsg query
+        let query = '^\s*' . instr . '\s'
         if line =~ query
                     \ || line=~ '^\s*\.'
             let ind = &sw
