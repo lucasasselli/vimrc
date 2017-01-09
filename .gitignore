@@ -5,3 +5,4 @@ vim/swap/*
 !vim/swap/.gitkeep
 
 vim/bundle/*
+!vim/bundle/.gitkeep
