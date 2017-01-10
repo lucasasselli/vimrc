@@ -8,7 +8,6 @@ call vundle#rc()
 Plugin 'The-NERD-tree'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'JPR75/vip'
-Plugin 'lucasax/vim-arduino'
 Plugin 'vim-scripts/a.vim'
 filetype plugin indent on " required! 
 
@@ -31,7 +30,7 @@ if (has('gui_running'))
     set guioptions-=T " Remove toolbar
     set guioptions-=r " Remove right-hand scroll bar
     set guioptions-=L " Remove left-hand scroll bar
-    set guioptions=c " Dialogs in prompt
+    set guioptions+=c " Dialogs in prompt
 
     " Use Solarized theme
     set background=dark
@@ -125,7 +124,7 @@ function! Tab_Or_Complete()
         return "\<Tab>"
     endif
 endfunction
-:inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
+" :inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
 
 " ASM
 autocmd BufNewFile,Bufread *.ASM,*.asm set ft=masm
