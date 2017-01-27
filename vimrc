@@ -12,6 +12,8 @@ Plugin 'vim-scripts/a.vim'
 Plugin 'vandew/supertab'
 Plugin 'chriskempson/base16-vim'
 Plugin 'godlygeek/tabular'
+Plugin 'lervag/vimtex'
+Plugin 'tpope/vim-fugitive'
 filetype plugin indent on " required! 
 
 "--------------------------------------------------
@@ -35,24 +37,24 @@ let g:NERDTreeHijackNetrw = 1
 let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
-
 "--------------------------------------------------
 " VIM SETTINGS
 "--------------------------------------------------
 
 syntax enable " syntax highlight enabled
 
-set wildmenu     " Command line completion
-set showcmd      " Show partial commands
-set ignorecase   " Ignore case in searches...
-set smartcase    " ... Except if uppercase
-set autoindent   " If no indentation is specified, keep the indentation of the previous line
-set laststatus=2 " Always display status line
-set confirm      " If file must be saved to execute command, ask to the user insted of showing an error
-set number       " Show line number
+set wildmenu       " Command line completion
+set showcmd        " Show partial commands
+set ignorecase     " Ignore case in searches...
+set smartcase      " ... Except if uppercase
+set autoindent     " If no indentation is specified, keep the indentation of the previous line
+set laststatus=2   " Always display status line
+set confirm        " If file must be saved to execute command, ask to the user insted of showing an error
+set number         " Show line number
 set cursorline
 set incsearch
 set hlsearch
+set relativenumber " Show line numer in a relative fashion
 
 " Indentation setting
 set shiftwidth=4
@@ -71,9 +73,7 @@ nnoremap <Down> :echoe "Use j"<CR>
 
 " Key mappings
 map <F1> :NERDTreeToggle<CR>
-imap <F1> :NERDTreeToggle<CR>
 map <F2> :call QuickfixToggle()<CR>
-imap <F2> :call QuickfixToggle()<CR>
 map <F5> :w<CR>:make<CR>
 map <F6> :cprev<CR>
 map <F7> :cnext<CR>
