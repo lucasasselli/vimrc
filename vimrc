@@ -9,7 +9,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'The-NERD-tree'
 Plugin 'JPR75/vip'
 Plugin 'vim-scripts/a.vim'
-Plugin 'vandew/supertab'
+Plugin 'ervandew/supertab'
 Plugin 'chriskempson/base16-vim'
 Plugin 'godlygeek/tabular'
 Plugin 'lervag/vimtex'
@@ -72,17 +72,24 @@ nnoremap <Up> :echoe "Use k"<CR>
 nnoremap <Down> :echoe "Use j"<CR>
 
 " Key mappings
-map <F1> :NERDTreeToggle<CR>
+nmap <F1> :NERDTreeToggle<CR>
+imap <F1> <C-o>:NERDTreeToggle<CR>
 map <F2> :call QuickfixToggle()<CR>
 map <F5> :w<CR>:make<CR>
 map <F6> :cprev<CR>
 map <F7> :cnext<CR>
-map <F12> mz<bar> gg=G'z 
-map <C-p> "+p
-map <C-c> "+y
+nmap <F12> mz<bar> gg=G'z 
+nmap <F12> <C-o>mz<bar> gg=G'z 
+nmap <C-p> "+p
+imap <C-p> <C-o>"+p
+nmap <C-c> "+y
+imap <C-c> <C-o>"+y
 
 " Commands
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
+
+" Command shortcuts
+cnoreabbrev <expr> te getcmdtype() == ":" && getcmdline() == 'te' ? 'tabedit' : 'te'
 
 " Quicker window movement
 nnoremap <C-j> <C-w>j
@@ -125,11 +132,10 @@ if (has('gui_running'))
     let base16colorspace=256
     colorscheme base16-ocean
 else
-    " Only set color scheme if terminal supports truecolor
-    if $COLORTERM == 'truecolor'
-        let base16colorspace=256
-        colorscheme base16-ocean
-    endif
+    " TODO: experimental with cygwin
+    let base16colorspace=256
+    colorscheme base16-ocean
+    set termguicolors
 endif
 
 "-------------------------------------------------- 
