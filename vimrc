@@ -16,6 +16,7 @@ Plugin 'lervag/vimtex'
 Plugin 'tpope/vim-fugitive'
 filetype plugin indent on " required! 
 
+
 "--------------------------------------------------
 " AUTO COMMANDS
 "--------------------------------------------------
@@ -79,7 +80,7 @@ map <F5> :w<CR>:make<CR>
 map <F6> :cprev<CR>
 map <F7> :cnext<CR>
 nmap <F12> mz<bar> gg=G'z 
-nmap <F12> <C-o>mz<bar> gg=G'z 
+imap <F12> <C-o>mz<bar> gg=G'z 
 nmap <C-p> "+p
 imap <C-p> <C-o>"+p
 nmap <C-c> "+y
