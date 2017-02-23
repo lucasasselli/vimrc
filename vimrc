@@ -14,7 +14,6 @@ Plugin 'chriskempson/base16-vim'
 Plugin 'godlygeek/tabular'
 Plugin 'lervag/vimtex'
 Plugin 'tpope/vim-fugitive'
-Plugin 'junegunn/goyo.vim'
 filetype plugin indent on " required! 
 
 
