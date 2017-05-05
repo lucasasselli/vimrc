@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Store current dir
 DIR=$(pwd)
 
