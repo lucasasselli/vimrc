@@ -12,8 +12,9 @@ Plugin 'vim-scripts/a.vim'
 Plugin 'ervandew/supertab'
 Plugin 'chriskempson/base16-vim'
 Plugin 'godlygeek/tabular'
-Plugin 'lervag/vimtex'
 Plugin 'tpope/vim-fugitive'
+Plugin 'fatih/vim-go'
+Plugin 'Shougo/neocomplete.vim'
 filetype plugin indent on " required! 
 
 
@@ -37,6 +38,10 @@ let g:NERDTreeHijackNetrw = 1
 " SuperTab
 let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
+
+" Neocomplete
+let g:neocomplete#enable_at_startup = 1
+set completeopt-=preview
 
 "--------------------------------------------------
 " VIM SETTINGS
@@ -66,6 +71,9 @@ set expandtab
 set backspace=2
 set backspace=indent,eol,start
 
+" Leader key
+let mapleader = ","
+
 " Get off my lawn
 nnoremap <Left> :echoe "Use h"<CR>
 nnoremap <Right> :echoe "Use l"<CR>
@@ -75,7 +83,7 @@ nnoremap <Down> :echoe "Use j"<CR>
 " Key mappings
 nmap <F1> :NERDTreeToggle<CR>
 imap <F1> <C-o>:NERDTreeToggle<CR>
-map <F2> :call QuickfixToggle()<CR>
+map <leader>q :call QuickfixToggle()<CR>
 map <F5> :w<CR>:make<CR>
 map <F6> :cprev<CR>
 map <F7> :cnext<CR>
