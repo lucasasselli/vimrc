@@ -1,22 +1,22 @@
-set nocompatible " be iMproved
-
+set nocompatible " be iMproved 
 filetype off " required!
 
 " Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'The-NERD-tree'
-Plugin 'JPR75/vip'
-Plugin 'vim-scripts/a.vim'
-Plugin 'ervandew/supertab'
-Plugin 'chriskempson/base16-vim'
-Plugin 'godlygeek/tabular'
-Plugin 'tpope/vim-fugitive'
-Plugin 'fatih/vim-go'
-Plugin 'Shougo/neocomplete.vim'
-filetype plugin indent on " required! 
-
+Plugin 'VundleVim/Vundle.vim'       " Package manager
+Plugin 'The-NERD-tree'              " File manager
+Plugin 'JPR75/vip'                  " VHDL entity/component/instance conversion
+Plugin 'vim-scripts/a.vim'          " C++ swap .h/.cpp
+Plugin 'chriskempson/base16-vim'    " Colorscheme collection
+Plugin 'godlygeek/tabular'          " Text alignment util
+Plugin 'tpope/vim-fugitive'         " Git integration
+Plugin 'fatih/vim-go'               " Go util bundle
+Plugin 'Shougo/neocomplete.vim'     " On-the-go autocompletion
+Plugin 'Shougo/neosnippet'          " Snippets engine
+Plugin 'Shougo/neosnippet-snippets' " Snippets collection
+Plugin 'w0rp/ale'
+filetype plugin indent on " required!
 
 "--------------------------------------------------
 " AUTO COMMANDS
@@ -26,22 +26,6 @@ autocmd GUIEnter * silent! lcd %:p:h                                           "
 autocmd FileType help wincmd L                                                 " Open new help window horizontally
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o " Disable auto comment insertion
 autocmd BufNewFile,Bufread *.ASM,*.asm set ft=masm                             " masm filetype
-
-"--------------------------------------------------
-" PLUGIN SETTINGS
-"--------------------------------------------------
-
-" NerdTree 
-let g:NERDTreeChDirMode = 1
-let g:NERDTreeHijackNetrw = 1
-
-" SuperTab
-let g:SuperTabDefaultCompletionType = "<c-n>"
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
-
-" Neocomplete
-let g:neocomplete#enable_at_startup = 1
-set completeopt-=preview
 
 "--------------------------------------------------
 " VIM SETTINGS
@@ -71,8 +55,11 @@ set expandtab
 set backspace=2
 set backspace=indent,eol,start
 
-" Leader key
-let mapleader = ","
+" Make Locationlist/Quickfix circular
+command! Cnext try | cnext | catch | cfirst | catch | endtry
+command! Cprev try | cprev | catch | clast | catch | endtry
+command! Lnext try | lnext | catch | lfirst | catch | endtry
+command! Lprev try | lprev | catch | llast | catch | endtry
 
 " Get off my lawn
 nnoremap <Left> :echoe "Use h"<CR>
@@ -81,18 +68,16 @@ nnoremap <Up> :echoe "Use k"<CR>
 nnoremap <Down> :echoe "Use j"<CR>
 
 " Key mappings
-nmap <F1> :NERDTreeToggle<CR>
-imap <F1> <C-o>:NERDTreeToggle<CR>
-map <leader>q :call QuickfixToggle()<CR>
-map <F5> :w<CR>:make<CR>
-map <F6> :cprev<CR>
-map <F7> :cnext<CR>
-nmap <F12> mz<bar> gg=G'z 
-imap <F12> <C-o>mz<bar> gg=G'z 
-nmap <C-p> "+p
-imap <C-p> <C-o>"+p
-nmap <C-c> "+y
-imap <C-c> <C-o>"+y
+nmap <leader>f :NERDTreeToggle<CR>
+nmap <leader>q :call QuickfixToggle()<CR>
+nmap <leader>b :w<CR>:make<CR>
+nmap <C-n> :Cnext<CR>
+nmap <C-N> :Cprev<CR>
+nmap <leader>a mz<bar> gg=G'z 
+" nmap <C-p> "+p
+" imap <C-p> <C-o>"+p
+" nmap <C-c> "+y
+" imap <C-c> <C-o>"+y
 
 " Commands
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
@@ -116,11 +101,33 @@ set undoreload=10000
 set directory=~/.vim/swap/
 
 " Enable syntax completion
-if exists("+omnifunc")
-    setlocal omnifunc=syntaxcomplete#Complete
-endif
+" NOTE: useless with neocomplete
+" if exists("+omnifunc")
+"    setlocal omnifunc=syntaxcomplete#Complete
+" endif
 
 command Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw
+
+"--------------------------------------------------
+" PLUGIN SETTINGS
+"--------------------------------------------------
+
+" NerdTree 
+let g:NERDTreeChDirMode = 1
+let g:NERDTreeHijackNetrw = 1
+
+" Neocomplete
+let g:neocomplete#enable_at_startup = 1
+set completeopt-=preview
+
+" Neosnippets
+imap <expr><CR> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <Tab> pumvisible() ? "\<Down>" : "\<C-n>"
+
+
+" Ale
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
 
 "--------------------------------------------------
 " GUI SETTINGS
@@ -139,11 +146,10 @@ if (has('gui_running'))
     set guioptions+=c " Dialogs in prompt
 
     let base16colorspace=256
-    colorscheme base16-ocean
+    colorscheme base16-monokai
 else
-    " TODO: experimental with cygwin
     let base16colorspace=256
-    colorscheme base16-ocean
+    colorscheme base16-monokai
     set termguicolors
 endif
 
