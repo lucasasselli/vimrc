@@ -15,7 +15,7 @@ Plugin 'fatih/vim-go'               " Go util bundle
 Plugin 'Shougo/neocomplete.vim'     " On-the-go autocompletion
 Plugin 'Shougo/neosnippet'          " Snippets engine
 Plugin 'Shougo/neosnippet-snippets' " Snippets collection
-Plugin 'w0rp/ale'
+Plugin 'w0rp/ale'                   " Linting engine
 filetype plugin indent on " required!
 
 "--------------------------------------------------
@@ -122,8 +122,7 @@ set completeopt-=preview
 
 " Neosnippets
 imap <expr><CR> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <Tab> pumvisible() ? "\<Down>" : "\<C-n>"
-
+inoremap <expr> <Tab> pumvisible() ? "\<Down>" : "\<Tab>"
 
 " Ale
 let g:ale_set_loclist = 0
