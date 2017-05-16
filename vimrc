@@ -12,9 +12,11 @@ Plugin 'chriskempson/base16-vim'    " Colorscheme collection
 Plugin 'godlygeek/tabular'          " Text alignment util
 Plugin 'tpope/vim-fugitive'         " Git integration
 Plugin 'fatih/vim-go'               " Go util bundle
-Plugin 'Shougo/neocomplete.vim'     " On-the-go autocompletion
-Plugin 'Shougo/neosnippet'          " Snippets engine
-Plugin 'Shougo/neosnippet-snippets' " Snippets collection
+Plugin 'Shougo/neocomplcache.vim'     " On-the-go autocompletion
+if(v:version >= 740)
+    Plugin 'Shougo/neosnippet'          " Snippets engine
+    Plugin 'Shougo/neosnippet-snippets' " Snippets collection
+endif
 Plugin 'w0rp/ale'                   " Linting engine
 filetype plugin indent on " required!
 
@@ -41,9 +43,9 @@ set autoindent     " If no indentation is specified, keep the indentation of the
 set laststatus=2   " Always display status line
 set confirm        " If file must be saved to execute command, ask to the user insted of showing an error
 set number         " Show line number
-set cursorline
-set incsearch
-set hlsearch
+set cursorline     " Highlight cursor line
+set incsearch      " Search as you type
+set hlsearch       " Highlight search terms
 set relativenumber " Show line numer in a relative fashion
 
 " Indentation setting
@@ -68,8 +70,9 @@ nnoremap <Up> :echoe "Use k"<CR>
 nnoremap <Down> :echoe "Use j"<CR>
 
 " Key mappings
-nmap <leader>f :NERDTreeToggle<CR>
-nmap <leader>q :call QuickfixToggle()<CR>
+nmap <silent> <F1> :NERDTreeToggle<CR>   " Toggle NerdTREE
+nmap <silent> <leader>f :NERDTreeToggle<CR>
+nmap <leader>q :call QuickfixToggle()<CR> " Toggle quickfix window
 nmap <leader>b :w<CR>:make<CR>
 nmap <C-n> :Cnext<CR>
 nmap <C-N> :Cprev<CR>
@@ -78,6 +81,8 @@ nmap <leader>a mz<bar> gg=G'z
 " imap <C-p> <C-o>"+p
 " nmap <C-c> "+y
 " imap <C-c> <C-o>"+y
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>rv :so $MYVIMRC<CR>
 
 " Commands
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
@@ -106,7 +111,7 @@ set directory=~/.vim/swap/
 "    setlocal omnifunc=syntaxcomplete#Complete
 " endif
 
-command Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw
+command! Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw
 
 "--------------------------------------------------
 " PLUGIN SETTINGS
@@ -116,13 +121,18 @@ command Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw
 let g:NERDTreeChDirMode = 1
 let g:NERDTreeHijackNetrw = 1
 
-" Neocomplete
-let g:neocomplete#enable_at_startup = 1
+" Neocomplcache/Neosnippets
+let g:neocomplcache_enable_at_startup = 1
 set completeopt-=preview
 
-" Neosnippets
-imap <expr><CR> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <expr> <Tab> pumvisible() ? "\<Down>" : "\<Tab>"
+
+if(v:version >= 740)
+    imap <expr><CR> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-y>" : "\<CR>"
+else
+    inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+endif
+    
 
 " Ale
 let g:ale_set_loclist = 0
@@ -131,6 +141,17 @@ let g:ale_set_quickfix = 1
 "--------------------------------------------------
 " GUI SETTINGS
 "--------------------------------------------------
+
+" Wrapper for main colorscheme configuration
+function! SetColorScheme()
+    let base16colorspace=256
+    colorscheme base16-monokai
+endfunction
+
+" Wrapper for fallback colorscheme configuration
+function! SetFallbackCS()
+    colorscheme delek
+endfunction
 
 if (has('gui_running'))
     " Set font
@@ -144,19 +165,26 @@ if (has('gui_running'))
     set guioptions-=L " Remove left-hand scroll bar
     set guioptions+=c " Dialogs in prompt
 
-    let base16colorspace=256
-    colorscheme base16-monokai
+    call SetColorScheme()
 else
-    let base16colorspace=256
-    colorscheme base16-monokai
-    set termguicolors
+    " If version is >= 800 try true color mode
+    if(v:version >= 800)
+        set termguicolors
+        call SetColorScheme()
+    else
+        if(&t_Co == 256)
+            call SetColorScheme()
+        else
+            call SetFallbackCS()
+        endif
+    endif
 endif
 
 "-------------------------------------------------- 
 " FUNCTIONS
 "-------------------------------------------------- 
 
-function ClearWhitespace()
+function! ClearWhitespace()
     retab!
     %s/^\s*//ge
     %s/\s\s\+/ /ge
