@@ -1,23 +1,23 @@
 set nocompatible " be iMproved 
+
 filetype off " required!
 
 " Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
-Plugin 'VundleVim/Vundle.vim'       " Package manager
-Plugin 'The-NERD-tree'              " File manager
-Plugin 'JPR75/vip'                  " VHDL entity/component/instance conversion
-Plugin 'vim-scripts/a.vim'          " C++ swap .h/.cpp
-Plugin 'chriskempson/base16-vim'    " Colorscheme collection
-Plugin 'godlygeek/tabular'          " Text alignment util
-Plugin 'tpope/vim-fugitive'         " Git integration
-Plugin 'fatih/vim-go'               " Go util bundle
-Plugin 'Shougo/neocomplcache.vim'     " On-the-go autocompletion
+Plugin 'VundleVim/Vundle.vim'           " Package manager
+Plugin 'JPR75/vip'                      " VHDL entity/component/instance conversion
+Plugin 'vim-scripts/a.vim'              " C++ swap .h/.cpp
+Plugin 'chriskempson/base16-vim'        " Colorscheme collection
+Plugin 'godlygeek/tabular'              " Text alignment util
+Plugin 'tpope/vim-fugitive'             " Git integration
+Plugin 'fatih/vim-go'                   " Go util bundle
+Plugin 'Shougo/neocomplcache.vim'       " On-the-go autocompletion
 if(v:version >= 740)
     Plugin 'Shougo/neosnippet'          " Snippets engine
     Plugin 'Shougo/neosnippet-snippets' " Snippets collection
 endif
-Plugin 'w0rp/ale'                   " Linting engine
+Plugin 'w0rp/ale'                       " Linting engine
 filetype plugin indent on " required!
 
 "--------------------------------------------------
@@ -28,6 +28,15 @@ autocmd GUIEnter * silent! lcd %:p:h                                           "
 autocmd FileType help wincmd L                                                 " Open new help window horizontally
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o " Disable auto comment insertion
 autocmd BufNewFile,Bufread *.ASM,*.asm set ft=masm                             " masm filetype
+autocmd FileType netrw unmap <buffer> <F1>
+
+" Cursor line highlight for selected window
+augroup BgHighlight
+    autocmd!
+    autocmd WinEnter * set cul
+    autocmd WinLeave * set nocul
+augroup END
+
 
 "--------------------------------------------------
 " VIM SETTINGS
@@ -70,8 +79,8 @@ nnoremap <Up> :echoe "Use k"<CR>
 nnoremap <Down> :echoe "Use j"<CR>
 
 " Key mappings
-nmap <silent> <F1> :NERDTreeToggle<CR>   " Toggle NerdTREE
-nmap <silent> <leader>f :NERDTreeToggle<CR>
+nmap <silent> <buffer><F1> :Lexplore<CR>          " Toggle Netwr
+nmap <silent> <leader>f :Lexplore<CR>
 nmap <leader>q :call QuickfixToggle()<CR> " Toggle quickfix window
 nmap <leader>b :w<CR>:make<CR>
 nmap <C-n> :Cnext<CR>
@@ -85,7 +94,7 @@ nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>rv :so $MYVIMRC<CR>
 
 " Commands
-nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
+nnoremap ,cd :cd %:p:h<CR>:cwd<CR>
 
 " Command shortcuts
 cnoreabbrev <expr> te getcmdtype() == ":" && getcmdline() == 'te' ? 'tabedit' : 'te'
@@ -117,9 +126,13 @@ command! Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw
 " PLUGIN SETTINGS
 "--------------------------------------------------
 
-" NerdTree 
-let g:NERDTreeChDirMode = 1
-let g:NERDTreeHijackNetrw = 1
+" Netwrst
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 3
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+let g:netrw_dirhistmax=0
 
 " Neocomplcache/Neosnippets
 let g:neocomplcache_enable_at_startup = 1
