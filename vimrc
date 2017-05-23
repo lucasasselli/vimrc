@@ -17,7 +17,9 @@ if(v:version >= 740)
     Plugin 'Shougo/neosnippet'          " Snippets engine
     Plugin 'Shougo/neosnippet-snippets' " Snippets collection
 endif
-Plugin 'w0rp/ale'                       " Linting engine
+if(v:version >= 800)
+    Plugin 'w0rp/ale'                   " Linting engine
+endif
 filetype plugin indent on " required!
 
 "--------------------------------------------------
@@ -115,10 +117,9 @@ set undoreload=10000
 set directory=~/.vim/swap/
 
 " Enable syntax completion
-" NOTE: useless with neocomplete
-" if exists("+omnifunc")
-"    setlocal omnifunc=syntaxcomplete#Complete
-" endif
+if exists("+omnifunc")
+    setlocal omnifunc=syntaxcomplete#Complete
+endif
 
 command! Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw
 
