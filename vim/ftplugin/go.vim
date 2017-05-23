@@ -17,3 +17,9 @@ autocmd FileType go nmap <leader>l  <Plug>(go-lint)
 
 " Other
 let g:go_fmt_autosave = 0 " Disable fmt on save
+
+" Omni complete patterns
+if !exists('g:neocomplcache_omni_patterns')
+  let g:neocomplcache_omni_patterns = {}
+endif
+let g:neocomplcache_omni_patterns.go = '\h\w*\.\?'

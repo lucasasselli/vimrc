@@ -74,6 +74,8 @@ command! Cprev try | cprev | catch | clast | catch | endtry
 command! Lnext try | lnext | catch | lfirst | catch | endtry
 command! Lprev try | lprev | catch | llast | catch | endtry
 
+command! Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw
+
 " Get off my lawn
 nnoremap <Left> :echoe "Use h"<CR>
 nnoremap <Right> :echoe "Use l"<CR>
@@ -81,7 +83,7 @@ nnoremap <Up> :echoe "Use k"<CR>
 nnoremap <Down> :echoe "Use j"<CR>
 
 " Key mappings
-nmap <silent> <buffer><F1> :Lexplore<CR>          " Toggle Netwr
+nmap <silent> <F1> :Lexplore<CR>          " Toggle Netwr
 nmap <silent> <leader>f :Lexplore<CR>
 nmap <leader>q :call QuickfixToggle()<CR> " Toggle quickfix window
 nmap <leader>b :w<CR>:make<CR>
@@ -121,7 +123,6 @@ if exists("+omnifunc")
     setlocal omnifunc=syntaxcomplete#Complete
 endif
 
-command! Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw
 
 "--------------------------------------------------
 " PLUGIN SETTINGS
@@ -137,6 +138,7 @@ let g:netrw_dirhistmax=0
 
 " Neocomplcache/Neosnippets
 let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_min_syntax_lenght = 3
 set completeopt-=preview
 
 inoremap <expr> <Tab> pumvisible() ? "\<Down>" : "\<Tab>"
