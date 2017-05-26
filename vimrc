@@ -1,6 +1,7 @@
-set nocompatible " be iMproved 
+" VUNDLE {{{
 
-filetype off " required!
+set nocompatible " be iMproved
+filetype off     " required!
 
 " Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -22,15 +23,15 @@ if(v:version >= 800)
 endif
 filetype plugin indent on " required!
 
-"--------------------------------------------------
-" AUTO COMMANDS
-"--------------------------------------------------
+"}}}
 
+" AUTO COMMANDS  {{{
+ 
 autocmd GUIEnter * silent! lcd %:p:h                                           " Fix working dir when using GUI
 autocmd FileType help wincmd L                                                 " Open new help window horizontally
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o " Disable auto comment insertion
 autocmd BufNewFile,Bufread *.ASM,*.asm set ft=masm                             " masm filetype
-autocmd FileType netrw unmap <buffer> <F1>
+autocmd FileType netrw unmap <buffer> <F1>                                     " Disable netrw F1 mapping
 
 " Cursor line highlight for selected window
 augroup BgHighlight
@@ -39,10 +40,9 @@ augroup BgHighlight
     autocmd WinLeave * set nocul
 augroup END
 
+" }}}
 
-"--------------------------------------------------
-" VIM SETTINGS
-"--------------------------------------------------
+" VIM SETTINGS {{{
 
 syntax enable " syntax highlight enabled
 
@@ -68,28 +68,59 @@ set expandtab
 set backspace=2
 set backspace=indent,eol,start
 
-" Make Locationlist/Quickfix circular
-command! Cnext try | cnext | catch | cfirst | catch | endtry
-command! Cprev try | cprev | catch | clast | catch | endtry
-command! Lnext try | lnext | catch | lfirst | catch | endtry
-command! Lprev try | lprev | catch | llast | catch | endtry
+" Persistent undo
+set undodir=~/.vim/undo/
+set undofile
+set undolevels=1000
+set undoreload=10000
 
-command! Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw
+" .swp in one folder
+set directory=~/.vim/swap/
 
-" Get off my lawn
-nnoremap <Left> :echoe "Use h"<CR>
-nnoremap <Right> :echoe "Use l"<CR>
-nnoremap <Up> :echoe "Use k"<CR>
-nnoremap <Down> :echoe "Use j"<CR>
+" Folding
+set foldmethod=indent   " fold based on indent level
+set foldnestmax=10      " max 10 depth
+set foldenable          " don't fold files by default on open
+set foldlevelstart=10   " start with fold level of 1
 
-" Key mappings
-nmap <silent> <F1> :Lexplore<CR>          " Toggle Netwr
-nmap <silent> <leader>f :Lexplore<CR>
+" Enable syntax completion
+if exists("+omnifunc")
+    setlocal omnifunc=syntaxcomplete#Complete
+endif
+" }}}
+
+" KEY MAPPINGS {{{
+
+" Leader 
+let mapleader="," " Leader
+
+nmap <silent> <leader>f :Lexplore<CR>     " Open netrw
 nmap <leader>q :call QuickfixToggle()<CR> " Toggle quickfix window
-nmap <leader>b :w<CR>:make<CR>
+nmap <leader>b :w<CR>:make<CR>            " Make
+nmap <leader>a mz<bar> gg=G'z             " Indent all file
+nmap <leader><space> :noh<CR>         " Clear search
+
+" Arrow keys
+nnoremap <Left> <Nop>
+nnoremap <Right> <Nop>
+nnoremap <Up> :<Up>
+inoremap <Up> <Esc>:<Up>
+nnoremap <Down> :
+inoremap <Down> <Esc>:
+
+" Quicker window movement
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+
+" Others
+nmap <C-j> O<Esc>j               " Add line above
+nmap <C-k> o<Esc>k               " Add line below
+nmap <Space> za                  " Open fold
+nmap <silent> <F1> :Lexplore<CR> " Toggle Netwr
 nmap <C-n> :Cnext<CR>
 nmap <C-N> :Cprev<CR>
-nmap <leader>a mz<bar> gg=G'z 
 " nmap <C-p> "+p
 " imap <C-p> <C-o>"+p
 " nmap <C-c> "+y
@@ -103,30 +134,18 @@ nnoremap ,cd :cd %:p:h<CR>:cwd<CR>
 " Command shortcuts
 cnoreabbrev <expr> te getcmdtype() == ":" && getcmdline() == 'te' ? 'tabedit' : 'te'
 
-" Quicker window movement
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
 
-" Persistent undo
-set undodir=~/.vim/undo/
-set undofile
-set undolevels=1000
-set undoreload=10000
+" Make Locationlist/Quickfix circular
+command! Cnext try | cnext | catch | cfirst | catch | endtry
+command! Cprev try | cprev | catch | clast | catch | endtry
+command! Lnext try | lnext | catch | lfirst | catch | endtry
+command! Lprev try | lprev | catch | llast | catch | endtry
 
-" .swp in one folder
-set directory=~/.vim/swap/
+command! Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw
 
-" Enable syntax completion
-if exists("+omnifunc")
-    setlocal omnifunc=syntaxcomplete#Complete
-endif
+" }}} 
 
-
-"--------------------------------------------------
-" PLUGIN SETTINGS
-"--------------------------------------------------
+" PLUGIN SETTINGS {{{
 
 " Netwrst
 let g:netrw_banner = 0
@@ -154,9 +173,9 @@ endif
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 
-"--------------------------------------------------
-" GUI SETTINGS
-"--------------------------------------------------
+" }}}
+
+" GUI SETTINGS {{{
 
 " Wrapper for main colorscheme configuration
 function! SetColorScheme()
@@ -165,8 +184,9 @@ function! SetColorScheme()
 endfunction
 
 " Wrapper for fallback colorscheme configuration
+
 function! SetFallbackCS()
-    colorscheme delek
+    colorscheme murphy
 endfunction
 
 if (has('gui_running'))
@@ -196,9 +216,9 @@ else
     endif
 endif
 
-"-------------------------------------------------- 
-" FUNCTIONS
-"-------------------------------------------------- 
+" }}}
+
+" FUNCTIONS {{{
 
 function! ClearWhitespace()
     retab!
@@ -216,3 +236,8 @@ function! QuickfixToggle()
         let g:quickfix_is_open = 1
     endif
 endfunction
+
+" }}}
+
+" Modeline:
+" vim:ft=vim fdm=marker fdl=0
