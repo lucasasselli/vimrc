@@ -30,8 +30,7 @@ filetype plugin indent on " required!
 autocmd GUIEnter * silent! lcd %:p:h                                           " Fix working dir when using GUI
 autocmd FileType help wincmd L                                                 " Open new help window horizontally
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o " Disable auto comment insertion
-autocmd BufNewFile,Bufread *.ASM,*.asm set ft=masm                             " masm filetype
-autocmd FileType netrw unmap <buffer> <F1>                                     " Disable netrw F1 mapping
+autocmd FileType netrw unmap <buffer> <F1>                                 " Disable netrw F1 mapping
 
 " Cursor line highlight for selected window
 augroup BgHighlight
@@ -94,11 +93,11 @@ endif
 " Leader 
 let mapleader="," " Leader
 
-nmap <silent> <leader>f :Lexplore<CR>     " Open netrw
-nmap <leader>q :call QuickfixToggle()<CR> " Toggle quickfix window
-nmap <leader>b :w<CR>:make<CR>            " Make
-nmap <leader>a mz<bar> gg=G'z             " Indent all file
-nmap <leader><space> :noh<CR>         " Clear search
+nnoremap <silent> <leader>f :Lexplore<CR>     " Open netrw
+nnoremap <leader>q :call QuickfixToggle()<CR> " Toggle quickfix window
+nnoremap <leader>b :w<CR>:make<CR>            " Make
+nnoremap <leader>a mz<bar> gg=G'z             " Indent all file
+nnoremap <leader><space> :noh<CR>         " Clear search
 
 " Arrow keys
 nnoremap <Left> <Nop>
@@ -115,18 +114,18 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
 " Others
-nmap <C-j> O<Esc>j               " Add line above
-nmap <C-k> o<Esc>k               " Add line below
-nmap <Space> za                  " Open fold
-nmap <silent> <F1> :Lexplore<CR> " Toggle Netwr
-nmap <C-n> :Cnext<CR>
-nmap <C-N> :Cprev<CR>
-" nmap <C-p> "+p
+nnoremap <C-j> O<Esc>k               " Add line above
+nnoremap <C-k> o<Esc>j               " Add line below
+nnoremap <Space> za                  " Open fold
+nnoremap <silent> <F1> :Lexplore<CR> " Toggle Netwr
+nnoremap <C-n> :Cnext<CR>
+nnoremap <C-N> :Cprev<CR>
+" nnoremap <C-p> "+p
 " imap <C-p> <C-o>"+p
-" nmap <C-c> "+y
+" nnoremap <C-c> "+y
 " imap <C-c> <C-o>"+y
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>rv :so $MYVIMRC<CR>
+nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
+nnoremap <silent> <leader>rv :so $MYVIMRC<CR>
 
 " Commands
 nnoremap ,cd :cd %:p:h<CR>:cwd<CR>
@@ -156,6 +155,10 @@ let g:netrw_winsize = 25
 let g:netrw_dirhistmax=0
 
 " Neocomplcache/Neosnippets
+if !exists('g:neocomplcache_omni_patterns')
+  let g:neocomplcache_omni_patterns = {}
+endif
+
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_min_syntax_lenght = 3
 set completeopt-=preview
@@ -238,6 +241,17 @@ function! QuickfixToggle()
 endfunction
 
 " }}}
+
+let fm_syntax_use_cmd_abv = "0"
+let pt_syntax_use_cmd_abv = "0"
+let dctl_syntax_use_cmd_abv = "0"
+let dctlpt_syntax_use_cmd_abv = "0"
+
+let fm_syntax_enable_eval = "0"
+let pt_syntax_enable_eval = "0"
+let dctl_syntax_enable_eval = "0"
+let dctlpt_syntax_enable_eval = "0"
+
 
 " Modeline:
 " vim:ft=vim fdm=marker fdl=0
