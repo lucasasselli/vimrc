@@ -186,6 +186,7 @@ let g:ale_set_quickfix = 1
 
 " Wrapper for main colorscheme configuration
 function! SetColorScheme()
+    let g:base16colorspace=256 
     colorscheme base16-monokai
 endfunction
 
