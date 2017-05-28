@@ -7,6 +7,7 @@ filetype off     " required!
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
 Plugin 'VundleVim/Vundle.vim'           " Package manager
+Plugin 'scrooloose/nerdtree'            " IDE like File explorer
 Plugin 'JPR75/vip'                      " VHDL entity/component/instance conversion
 Plugin 'vim-scripts/a.vim'              " C++ swap .h/.cpp
 Plugin 'chriskempson/base16-vim'        " Colorscheme collection
@@ -30,7 +31,6 @@ filetype plugin indent on " required!
 autocmd GUIEnter * silent! lcd %:p:h                                           " Fix working dir when using GUI
 autocmd FileType help wincmd L                                                 " Open new help window horizontally
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o " Disable auto comment insertion
-autocmd FileType netrw unmap <buffer> <F1>                                 " Disable netrw F1 mapping
 
 " Cursor line highlight for selected window
 augroup BgHighlight
@@ -93,11 +93,11 @@ endif
 " Leader 
 let mapleader="," " Leader
 
-nnoremap <silent> <leader>f :Lexplore<CR>     " Open netrw
+nnoremap <Leader><Tab> :NERDTreeToggle<CR>
 nnoremap <leader>q :call QuickfixToggle()<CR> " Toggle quickfix window
 nnoremap <leader>b :w<CR>:make<CR>            " Make
 nnoremap <leader>a mz<bar> gg=G'z             " Indent all file
-nnoremap <leader><space> :noh<CR>         " Clear search
+nnoremap <leader><space> :noh<CR>             " Clear search
 
 " Arrow keys
 nnoremap <Left> <Nop>
@@ -114,10 +114,10 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
 " Others
-nnoremap <C-j> O<Esc>k               " Add line above
-nnoremap <C-k> o<Esc>j               " Add line below
+nnoremap <F1> :NERDTreeToggle<CR>
+nnoremap <C-k> O<Esc>j               " Add line above
+nnoremap <C-j> o<Esc>k               " Add line below
 nnoremap <Space> za                  " Open fold
-nnoremap <silent> <F1> :Lexplore<CR> " Toggle Netwr
 nnoremap <C-n> :Cnext<CR>
 nnoremap <C-N> :Cprev<CR>
 " nnoremap <C-p> "+p
@@ -146,12 +146,16 @@ command! Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw
 
 " PLUGIN SETTINGS {{{
 
+" Nerdtree
+let g:NERDTreeChDirMode = 1
+let g:NERDTreeHijackNetrw = 1
+
 " Netwrst
 let g:netrw_banner = 0
-let g:netrw_liststyle = 3
+let g:netrw_liststyle = 1
 let g:netrw_browse_split = 3
 let g:netrw_altv = 1
-let g:netrw_winsize = 25
+let g:netrw_winsize = 20
 let g:netrw_dirhistmax=0
 
 " Neocomplcache/Neosnippets
@@ -182,12 +186,10 @@ let g:ale_set_quickfix = 1
 
 " Wrapper for main colorscheme configuration
 function! SetColorScheme()
-    let base16colorspace=256
     colorscheme base16-monokai
 endfunction
 
 " Wrapper for fallback colorscheme configuration
-
 function! SetFallbackCS()
     colorscheme murphy
 endfunction
@@ -241,17 +243,6 @@ function! QuickfixToggle()
 endfunction
 
 " }}}
-
-let fm_syntax_use_cmd_abv = "0"
-let pt_syntax_use_cmd_abv = "0"
-let dctl_syntax_use_cmd_abv = "0"
-let dctlpt_syntax_use_cmd_abv = "0"
-
-let fm_syntax_enable_eval = "0"
-let pt_syntax_enable_eval = "0"
-let dctl_syntax_enable_eval = "0"
-let dctlpt_syntax_enable_eval = "0"
-
 
 " Modeline:
 " vim:ft=vim fdm=marker fdl=0
