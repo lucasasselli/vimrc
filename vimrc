@@ -186,6 +186,7 @@ let g:ale_set_quickfix = 1
 
 " Wrapper for main colorscheme configuration
 function! SetColorScheme()
+    let g:base16colorspace=256
     colorscheme base16-monokai
 endfunction
 
@@ -208,16 +209,10 @@ if (has('gui_running'))
 
     call SetColorScheme()
 else
-    " If version is >= 800 try true color mode
-    if(v:version >= 800)
-        set termguicolors
+    if(&t_Co == 256)
         call SetColorScheme()
     else
-        if(&t_Co == 256)
-            call SetColorScheme()
-        else
-            call SetFallbackCS()
-        endif
+        call SetFallbackCS()
     endif
 endif
 
