@@ -22,7 +22,6 @@ endif
 if(v:version >= 800)
     Plugin 'w0rp/ale'                   " Linting engine
 endif
-Plugin 'tpope/vim-commentary'           " Comments
 filetype plugin indent on " required!
 
 "}}}
@@ -100,10 +99,6 @@ nnoremap <leader>b :w<CR>:make<CR>            " Make
 nnoremap <leader>a mz<bar> gg=G'z             " Indent all file
 nnoremap <leader><space> :noh<CR>             " Clear search
 
-" Sane line movement
-nnoremap j  gj
-nnoremap k  gk
-
 " Arrow keys
 nnoremap <Left> <Nop>
 nnoremap <Right> <Nop>
@@ -120,11 +115,11 @@ nnoremap <C-l> <C-w>l
 
 " Others
 nnoremap <F1> :NERDTreeToggle<CR>
-nmap K O<Esc>j               " Add line above
-nmap J o<Esc>k               " Add line below
+nnoremap <C-k> O<Esc>j               " Add line above
+nnoremap <C-j> o<Esc>k               " Add line below
 nnoremap <Space> za                  " Open fold
-nmap <C-n> :Cnext<CR>
-nmap <C-p> :Cprev<CR>
+nnoremap <C-n> :Cnext<CR>
+nnoremap <C-N> :Cprev<CR>
 " nnoremap <C-p> "+p
 " imap <C-p> <C-o>"+p
 " nnoremap <C-c> "+y
@@ -137,6 +132,7 @@ nnoremap ,cd :cd %:p:h<CR>:cwd<CR>
 
 " Command shortcuts
 cnoreabbrev <expr> te getcmdtype() == ":" && getcmdline() == 'te' ? 'tabedit' : 'te'
+
 
 " Make Locationlist/Quickfix circular
 command! Cnext try | cnext | catch | cfirst | catch | endtry
@@ -190,12 +186,12 @@ let g:ale_set_quickfix = 1
 
 " Wrapper for main colorscheme configuration
 function! SetColorScheme()
-    if filereadable(expand("~/.vimrc_background"))
-        let g:base16colorspace=256
-        source ~/.vimrc_background
-    else
-        call SetFallbackCS()
-    endif
+<<<<<<< HEAD
+    let g:base16colorspace=256
+=======
+    let g:base16colorspace=256 
+>>>>>>> caf148da86bb5b6c6b8f0ceb12928d6356957f8c
+    colorscheme base16-monokai
 endfunction
 
 " Wrapper for fallback colorscheme configuration
@@ -247,4 +243,5 @@ endfunction
 
 " }}}
 
+" Modeline:
 " vim:ft=vim fdm=marker fdl=0
