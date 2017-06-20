@@ -190,11 +190,11 @@ let g:ale_set_quickfix = 1
 
 " Wrapper for main colorscheme configuration
 function! SetColorScheme()
+    let g:base16colorspace=256
     if filereadable(expand("~/.vimrc_background"))
-        let g:base16colorspace=256
         source ~/.vimrc_background
     else
-        call SetFallbackCS()
+        colorscheme base16-monokai
     endif
 endfunction
 
@@ -204,6 +204,7 @@ function! SetFallbackCS()
 endfunction
 
 if (has('gui_running'))
+    " Is GUI
     " Set font
     " TODO: check if font exists!
     set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline
@@ -216,6 +217,10 @@ if (has('gui_running'))
     set guioptions+=c " Dialogs in prompt
 
     call SetColorScheme()
+elseif ($COLORTERM == 'truecolor')
+    " Terminal has truecolor mode
+    call SetColorScheme()
+    set termguicolors
 else
     if(&t_Co == 256)
         call SetColorScheme()
