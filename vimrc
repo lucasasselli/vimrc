@@ -10,7 +10,7 @@ Plugin 'VundleVim/Vundle.vim'           " Package manager
 Plugin 'scrooloose/nerdtree'            " IDE like File explorer
 Plugin 'JPR75/vip'                      " VHDL entity/component/instance conversion
 Plugin 'vim-scripts/a.vim'              " C++ swap .h/.cpp
-Plugin 'chriskempson/base16-vim'        " Colorscheme collection
+Plugin 'sjl/badwolf'                    " Colorscheme
 Plugin 'godlygeek/tabular'              " Text alignment util
 Plugin 'tpope/vim-fugitive'             " Git integration
 Plugin 'fatih/vim-go'                   " Go util bundle
@@ -83,10 +83,51 @@ set foldnestmax=10      " max 10 depth
 set foldenable          " don't fold files by default on open
 set foldlevelstart=10   " start with fold level of 1
 
-" Enable syntax completion
+" Enable syntax omnicompletion
 if exists("+omnifunc")
     setlocal omnifunc=syntaxcomplete#Complete
 endif
+" }}}
+
+" PLUGIN SETTINGS {{{
+
+" Nerdtree
+let g:NERDTreeChDirMode = 1
+let g:NERDTreeHijackNetrw = 1
+
+" Netwrst
+let g:netrw_banner = 0
+let g:netrw_liststyle = 1
+let g:netrw_browse_split = 3
+let g:netrw_altv = 1
+let g:netrw_winsize = 20
+let g:netrw_dirhistmax=0
+
+" Neocomplcache/Neosnippets
+if !exists('g:neocomplcache_omni_patterns')
+  let g:neocomplcache_omni_patterns = {}
+endif
+let g:neocomplcache_omni_patterns.python = '\h\w*\.\?'
+
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_min_syntax_lenght = 3
+set completeopt-=preview
+
+inoremap <expr> <Tab> pumvisible() ? "\<Down>" : "\<Tab>"
+
+if(v:version >= 740)
+    imap <expr><CR> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-y>" : "\<CR>"
+else
+    inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+endif
+    
+
+" Ale
+highlight clear ALEErrorLine " Don't highlight line
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+let g:ale_fixers = { 'python': ['autopep8']}
+
 " }}}
 
 " KEY MAPPINGS {{{
@@ -120,15 +161,15 @@ nnoremap <C-l> <C-w>l
 
 " Others
 nnoremap <F1> :NERDTreeToggle<CR>
-nmap K O<Esc>j               " Add line above
-nmap J o<Esc>k               " Add line below
-nnoremap <Space> za                  " Open fold
+" nmap K O<Esc>j      " Add line above
+" nmap J o<Esc>k      " Add line below
+nnoremap <Space> za " Open fold
 nmap <C-n> :Cnext<CR>
 nmap <C-p> :Cprev<CR>
-" nnoremap <C-p> "+p
-" imap <C-p> <C-o>"+p
-" nnoremap <C-c> "+y
-" imap <C-c> <C-o>"+y
+nnoremap <C-p> "+p
+imap <C-p> <C-o>"+p
+nnoremap <C-c> "+y
+imap <C-c> <C-o>"+y
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <leader>rv :so $MYVIMRC<CR>
 
@@ -148,54 +189,11 @@ command! Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw
 
 " }}} 
 
-" PLUGIN SETTINGS {{{
-
-" Nerdtree
-let g:NERDTreeChDirMode = 1
-let g:NERDTreeHijackNetrw = 1
-
-" Netwrst
-let g:netrw_banner = 0
-let g:netrw_liststyle = 1
-let g:netrw_browse_split = 3
-let g:netrw_altv = 1
-let g:netrw_winsize = 20
-let g:netrw_dirhistmax=0
-
-" Neocomplcache/Neosnippets
-if !exists('g:neocomplcache_omni_patterns')
-  let g:neocomplcache_omni_patterns = {}
-endif
-
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_min_syntax_lenght = 3
-set completeopt-=preview
-
-inoremap <expr> <Tab> pumvisible() ? "\<Down>" : "\<Tab>"
-
-if(v:version >= 740)
-    imap <expr><CR> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-y>" : "\<CR>"
-else
-    inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-endif
-    
-
-" Ale
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-
-" }}}
-
 " GUI SETTINGS {{{
 
 " Wrapper for main colorscheme configuration
 function! SetColorScheme()
-    let g:base16colorspace=256
-    if filereadable(expand("~/.vimrc_background"))
-        source ~/.vimrc_background
-    else
-        colorscheme base16-monokai
-    endif
+    colorscheme badwolf
 endfunction
 
 " Wrapper for fallback colorscheme configuration
