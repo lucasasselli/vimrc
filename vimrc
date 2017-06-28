@@ -161,15 +161,16 @@ nnoremap <C-l> <C-w>l
 
 " Others
 nnoremap <F1> :NERDTreeToggle<CR>
+inoremap <F1> <Nop>
 " nmap K O<Esc>j      " Add line above
 " nmap J o<Esc>k      " Add line below
 nnoremap <Space> za " Open fold
 nmap <C-n> :Cnext<CR>
 nmap <C-p> :Cprev<CR>
-nnoremap <C-p> "+p
-imap <C-p> <C-o>"+p
-nnoremap <C-c> "+y
-imap <C-c> <C-o>"+y
+" nnoremap <C-p> "+p
+" imap <C-p> <C-o>"+p
+" nnoremap <C-c> "+y
+" imap <C-c> <C-o>"+y
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <leader>rv :so $MYVIMRC<CR>
 
