@@ -14,8 +14,9 @@ Plugin 'sjl/badwolf'                    " Colorscheme
 Plugin 'godlygeek/tabular'              " Text alignment util
 Plugin 'tpope/vim-fugitive'             " Git integration
 Plugin 'fatih/vim-go'                   " Go util bundle
-Plugin 'Shougo/neocomplcache.vim'       " On-the-go autocompletion
 if(v:version >= 740)
+    Plugin 'Shougo/neocomplete.vim'     " On-the-go autocompletion
+    Plugin 'Shougo/neco-vim'            " Vim syntax completion
     Plugin 'Shougo/neosnippet'          " Snippets engine
     Plugin 'Shougo/neosnippet-snippets' " Snippets collection
 endif
@@ -23,6 +24,8 @@ if(v:version >= 800)
     Plugin 'w0rp/ale'                   " Linting engine
 endif
 Plugin 'tpope/vim-commentary'           " Comments
+Plugin 'majutsushi/tagbar' 
+Plugin 'Yggdroot/indentLine' 
 filetype plugin indent on " required!
 
 "}}}
@@ -78,7 +81,7 @@ set undoreload=10000
 set directory=~/.vim/swap/
 
 " Folding
-set foldmethod=indent   " fold based on indent level
+set foldmethod=indent
 set foldnestmax=10      " max 10 depth
 set foldenable          " don't fold files by default on open
 set foldlevelstart=10   " start with fold level of 1
@@ -95,6 +98,10 @@ endif
 let g:NERDTreeChDirMode = 1
 let g:NERDTreeHijackNetrw = 1
 
+" Tagbar
+let g:tagbar_autofocus = 1
+let g:tagbar_width = 30
+
 " Netwrst
 let g:netrw_banner = 0
 let g:netrw_liststyle = 1
@@ -103,30 +110,37 @@ let g:netrw_altv = 1
 let g:netrw_winsize = 20
 let g:netrw_dirhistmax=0
 
-" Neocomplcache/Neosnippets
-if !exists('g:neocomplcache_omni_patterns')
-  let g:neocomplcache_omni_patterns = {}
-endif
-let g:neocomplcache_omni_patterns.python = '\h\w*\.\?'
-
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_min_syntax_lenght = 3
+" Neocomplete
 set completeopt-=preview
+let g:neocomplete#enable_at_startup = 1 " Enable Neocomplete
+let g:neocomplete#enable_smart_case = 1 " Enable smart-case
+let g:neocomplete#sources#syntax#min_keyword_length = 3 " Keyword length
 
-inoremap <expr> <Tab> pumvisible() ? "\<Down>" : "\<Tab>"
-
-if(v:version >= 740)
-    imap <expr><CR> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-y>" : "\<CR>"
-else
-    inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
 endif
-    
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+" inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+
+imap <expr><CR> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-y>" : "\<CR>"
 
 " Ale
 highlight clear ALEErrorLine " Don't highlight line
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 let g:ale_fixers = { 'python': ['autopep8']}
+let g:ale_python_flake8_options = '--max-line-length=180'
+let g:ale_python_autopep8_options = '--max-line-length=180'
 
 " }}}
 
@@ -140,10 +154,13 @@ nnoremap <leader>q :call QuickfixToggle()<CR> " Toggle quickfix window
 nnoremap <leader>b :w<CR>:make<CR>            " Make
 nnoremap <leader>a mz<bar> gg=G'z             " Indent all file
 nnoremap <leader><space> :noh<CR>             " Clear search
+nnoremap <leader>f :ALEFix<CR>                " ALEfix
 
 " Sane line movement
 nnoremap j  gj
+vnoremap j  gj
 nnoremap k  gk
+vnoremap k  gk
 
 " Arrow keys
 nnoremap <Left> <Nop>
@@ -153,24 +170,18 @@ inoremap <Up> <Esc>:<Up>
 nnoremap <Down> :
 inoremap <Down> <Esc>:
 
-" Quicker window movement
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
-
 " Others
 nnoremap <F1> :NERDTreeToggle<CR>
-inoremap <F1> <Nop>
-" nmap K O<Esc>j      " Add line above
-" nmap J o<Esc>k      " Add line below
+nnoremap <F2> :TagbarToggle<CR>
+noremap <C-k> O<Esc>j      " Add line above
+noremap <C-j> o<Esc>k      " Add line below
 nnoremap <Space> za " Open fold
 nmap <C-n> :Cnext<CR>
-nmap <C-p> :Cprev<CR>
-" nnoremap <C-p> "+p
-" imap <C-p> <C-o>"+p
-" nnoremap <C-c> "+y
-" imap <C-c> <C-o>"+y
+nmap <C-m> :Cprev<CR>
+nnoremap <c-p> "+p  " xterm paste
+imap <c-p> <c-o>"+p 
+nnoremap <c-c> "+y  " xterm copy
+imap <c-c> <c-o>"+y
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <leader>rv :so $MYVIMRC<CR>
 
