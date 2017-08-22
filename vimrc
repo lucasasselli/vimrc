@@ -26,6 +26,7 @@ endif
 Plugin 'tpope/vim-commentary'           " Comments
 Plugin 'majutsushi/tagbar' 
 Plugin 'Yggdroot/indentLine' 
+Plugin 'christoomey/vim-tmux-navigator'
 filetype plugin indent on " required!
 
 "}}}
@@ -162,6 +163,12 @@ vnoremap j  gj
 nnoremap k  gk
 vnoremap k  gk
 
+" Fast split navigation
+nnoremap <C-j> <C-w><C-j>
+nnoremap <C-k> <C-w><C-k>
+nnoremap <C-l> <C-w><C-l>
+nnoremap <C-h> <C-w><C-h>
+
 " Arrow keys
 nnoremap <Left> <Nop>
 nnoremap <Right> <Nop>
@@ -173,8 +180,6 @@ inoremap <Down> <Esc>:
 " Others
 nnoremap <F1> :NERDTreeToggle<CR>
 nnoremap <F2> :TagbarToggle<CR>
-noremap <C-k> O<Esc>j      " Add line above
-noremap <C-j> o<Esc>k      " Add line below
 nnoremap <Space> za " Open fold
 nmap <C-n> :Cnext<CR>
 nmap <C-m> :Cprev<CR>
