@@ -1,34 +1,30 @@
-" VUNDLE {{{
+" PLUGIN {{{
 
 set nocompatible " be iMproved
-filetype off     " required!
-
-" Vundle
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#rc()
-Plugin 'VundleVim/Vundle.vim'           " Package manager
-Plugin 'scrooloose/nerdtree'            " IDE like File explorer
-Plugin 'JPR75/vip'                      " VHDL entity/component/instance conversion
-Plugin 'vim-scripts/a.vim'              " C++ swap .h/.cpp
-Plugin 'sjl/badwolf'                    " Colorscheme
-Plugin 'godlygeek/tabular'              " Text alignment util
-Plugin 'tpope/vim-fugitive'             " Git integration
-Plugin 'fatih/vim-go'                   " Go util bundle
+call plug#begin('~/.vim/plugged')
+Plug 'VundleVim/Vundle.vim'           " Package manager
+Plug 'scrooloose/nerdtree'            " IDE like File explorer
+Plug 'JPR75/vip'                      " VHDL entity/component/instance conversion
+Plug 'vim-scripts/a.vim'              " C++ swap .h/.cpp
+Plug 'sjl/badwolf'                    " Colorscheme
+Plug 'godlygeek/tabular'              " Text alignment util
+" Plug 'tpope/vim-fugitive'             " Git integration
+Plug 'fatih/vim-go'                   " Go util bundle
 if(v:version >= 740)
-    Plugin 'Shougo/neocomplete.vim'     " On-the-go autocompletion
-    Plugin 'Shougo/neco-vim'            " Vim syntax completion
-    Plugin 'Shougo/neosnippet'          " Snippets engine
-    Plugin 'Shougo/neosnippet-snippets' " Snippets collection
+    Plug 'Shougo/neocomplete.vim'     " On-the-go autocompletion
+    Plug 'Shougo/neco-vim'            " Vim syntax completion
+    Plug 'Shougo/neosnippet'          " Snippets engine
+    Plug 'Shougo/neosnippet-snippets' " Snippets collection
+    Plug 'davidhalter/jedi-vim'
 endif
 if(v:version >= 800)
-    Plugin 'w0rp/ale'                   " Linting engine
+    Plug 'w0rp/ale'                   " Linting engine
 endif
-Plugin 'tpope/vim-commentary'           " Comments
-Plugin 'majutsushi/tagbar' 
-Plugin 'Yggdroot/indentLine' 
-Plugin 'christoomey/vim-tmux-navigator'
-filetype plugin indent on " required!
-
+Plug 'tpope/vim-commentary'           " Comments
+Plug 'majutsushi/tagbar' 
+Plug 'Yggdroot/indentLine' 
+Plug 'christoomey/vim-tmux-navigator'
+call plug#end()
 "}}}
 
 " AUTO COMMANDS  {{{
@@ -48,6 +44,7 @@ augroup END
 
 " VIM SETTINGS {{{
 
+filetype plugin indent on 
 syntax enable " syntax highlight enabled
 
 set wildmenu       " Command line completion
@@ -111,10 +108,14 @@ let g:netrw_altv = 1
 let g:netrw_winsize = 20
 let g:netrw_dirhistmax=0
 
+" Jedi
+let g:jedi#completions_enabled = 0
+let g:jedi#auto_vim_configuration = 0
+
 " Neocomplete
 set completeopt-=preview
-let g:neocomplete#enable_at_startup = 1 " Enable Neocomplete
-let g:neocomplete#enable_smart_case = 1 " Enable smart-case
+let g:neocomplete#enable_at_startup = 1                 " Enable Neocomplete
+let g:neocomplete#enable_smart_case = 1                 " Enable smart-case
 let g:neocomplete#sources#syntax#min_keyword_length = 3 " Keyword length
 
 " Define keyword.
@@ -122,6 +123,12 @@ if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+if !exists('g:neocomplete#force_omni_input_patterns')
+        let g:neocomplete#force_omni_input_patterns = {}
+endif
+
+let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
 
 " Plugin key-mappings.
 inoremap <expr><C-g>     neocomplete#undo_completion()

@@ -25,6 +25,4 @@ function dotlink(){
 
 dotlink vim
 dotlink vimrc
-
-git submodule init
-git submodule update
+curl -fLo vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
