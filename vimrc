@@ -2,7 +2,6 @@
 
 set nocompatible " be iMproved
 call plug#begin('~/.vim/plugged')
-Plug 'VundleVim/Vundle.vim'           " Package manager
 Plug 'scrooloose/nerdtree'            " IDE like File explorer
 Plug 'JPR75/vip'                      " VHDL entity/component/instance conversion
 Plug 'vim-scripts/a.vim'              " C++ swap .h/.cpp
@@ -10,7 +9,9 @@ Plug 'sjl/badwolf'                    " Colorscheme
 Plug 'godlygeek/tabular'              " Text alignment util
 " Plug 'tpope/vim-fugitive'             " Git integration
 Plug 'fatih/vim-go'                   " Go util bundle
+let neocompleteok = 0
 if(v:version >= 740)
+    let neocompleteok = 1
     Plug 'Shougo/neocomplete.vim'     " On-the-go autocompletion
     Plug 'Shougo/neco-vim'            " Vim syntax completion
     Plug 'Shougo/neosnippet'          " Snippets engine
@@ -24,11 +25,12 @@ Plug 'tpope/vim-commentary'           " Comments
 Plug 'majutsushi/tagbar' 
 Plug 'Yggdroot/indentLine' 
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'lervag/vimtex'
 call plug#end()
 "}}}
 
 " AUTO COMMANDS  {{{
- 
+
 autocmd GUIEnter * silent! lcd %:p:h                                           " Fix working dir when using GUI
 autocmd FileType help wincmd L                                                 " Open new help window horizontally
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o " Disable auto comment insertion
@@ -114,33 +116,35 @@ let g:jedi#auto_vim_configuration = 0
 
 " Neocomplete
 set completeopt-=preview
-let g:neocomplete#enable_at_startup = 1                 " Enable Neocomplete
-let g:neocomplete#enable_smart_case = 1                 " Enable smart-case
-let g:neocomplete#sources#syntax#min_keyword_length = 3 " Keyword length
+if (neocompleteok)
+    let g:neocomplete#enable_at_startup = 1                 " Enable Neocomplete
+    let g:neocomplete#enable_smart_case = 1                 " Enable smart-case
+    let g:neocomplete#sources#syntax#min_keyword_length = 3 " Keyword length
 
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+    " Define keyword.
+    if !exists('g:neocomplete#keyword_patterns')
+        let g:neocomplete#keyword_patterns = {}
+    endif
+    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-if !exists('g:neocomplete#force_omni_input_patterns')
+    if !exists('g:neocomplete#force_omni_input_patterns')
         let g:neocomplete#force_omni_input_patterns = {}
+    endif
+
+    let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+
+    " Plugin key-mappings.
+    inoremap <expr><C-g>     neocomplete#undo_completion()
+    inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+    " <TAB>: completion.
+    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+    " <C-h>, <BS>: close popup and delete backword char.
+    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+    " inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+
+    imap <expr><CR> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-y>" : "\<CR>"
 endif
-
-let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-" inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-
-imap <expr><CR> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-y>" : "\<CR>"
 
 " Ale
 highlight clear ALEErrorLine " Don't highlight line
