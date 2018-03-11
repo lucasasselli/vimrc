@@ -23,9 +23,11 @@ if(v:version >= 800)
 endif
 Plug 'tpope/vim-commentary'           " Comments
 Plug 'majutsushi/tagbar' 
-Plug 'Yggdroot/indentLine' 
+" Plug 'Yggdroot/indentLine' 
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'lervag/vimtex'
+Plug 'rhysd/vim-grammarous'
+" Plug 'itchyny/lightline.vim'
 call plug#end()
 "}}}
 
@@ -61,6 +63,7 @@ set cursorline     " Highlight cursor line
 set incsearch      " Search as you type
 set hlsearch       " Highlight search terms
 set relativenumber " Show line numer in a relative fashion
+set mouse=a        " Enable better mouse support
 
 " Indentation setting
 set shiftwidth=4
@@ -132,6 +135,7 @@ if (neocompleteok)
     endif
 
     let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+    let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::' 
 
     " Plugin key-mappings.
     inoremap <expr><C-g>     neocomplete#undo_completion()
@@ -154,25 +158,43 @@ let g:ale_fixers = { 'python': ['autopep8']}
 let g:ale_python_flake8_options = '--max-line-length=180'
 let g:ale_python_autopep8_options = '--max-line-length=180'
 
+" Grammarous
+let g:grammarous#use_vim_spelllang = 0
+let g:grammarous#enable_spell_check = 0
+
+let g:grammarous#hooks = {}
+function! g:grammarous#hooks.on_check(errs) abort
+    nmap <buffer><C-n> <Plug>(grammarous-move-to-next-error)
+    nmap <buffer><C-p> <Plug>(grammarous-move-to-previous-error)
+endfunction
+
+function! g:grammarous#hooks.on_reset(errs) abort
+    nunmap <buffer><C-n>
+    nunmap <buffer><C-p>
+endfunction
+
 " }}}
 
 " KEY MAPPINGS {{{
 
 " Leader 
 let mapleader="," " Leader
-
 nnoremap <Leader><Tab> :NERDTreeToggle<CR>
 nnoremap <leader>q :call QuickfixToggle()<CR> " Toggle quickfix window
 nnoremap <leader>b :w<CR>:make<CR>            " Make
 nnoremap <leader>a mz<bar> gg=G'z             " Indent all file
 nnoremap <leader><space> :noh<CR>             " Clear search
 nnoremap <leader>f :ALEFix<CR>                " ALEfix
+nnoremap <leader>t :tabnew<CR>                " Tab new
+nnoremap <leader>gc :GrammarousCheck<CR>
+nnoremap <leader>gr <Plug>(grammarous-reset)
+nnoremap <leader>gf <Plug>(grammarous-fixit)
 
 " Sane line movement
-nnoremap j  gj
-vnoremap j  gj
-nnoremap k  gk
-vnoremap k  gk
+nnoremap j gj
+vnoremap j gj
+nnoremap k gk
+vnoremap k gk
 
 " Fast split navigation
 nnoremap <C-j> <C-w><C-j>
@@ -180,9 +202,11 @@ nnoremap <C-k> <C-w><C-k>
 nnoremap <C-l> <C-w><C-l>
 nnoremap <C-h> <C-w><C-h>
 
+" Tab movement
+nnoremap <Left> :tabprevious<CR>
+nnoremap <Right> :tabnext<CR>
+
 " Arrow keys
-nnoremap <Left> <Nop>
-nnoremap <Right> <Nop>
 nnoremap <Up> :<Up>
 inoremap <Up> <Esc>:<Up>
 nnoremap <Down> :
@@ -190,14 +214,15 @@ inoremap <Down> <Esc>:
 
 " Others
 nnoremap <F1> :NERDTreeToggle<CR>
+inoremap <F1> <Esc>:NERDTreeToggle<CR>
 nnoremap <F2> :TagbarToggle<CR>
 nnoremap <Space> za " Open fold
 nmap <C-n> :Cnext<CR>
 nmap <C-m> :Cprev<CR>
-nnoremap <c-p> "+p  " xterm paste
-imap <c-p> <c-o>"+p 
-nnoremap <c-c> "+y  " xterm copy
-imap <c-c> <c-o>"+y
+" nnoremap <c-p> "+p  " xterm paste
+" imap <c-p> <c-o>"+p 
+" nnoremap <c-c> "+y  " xterm copy
+" imap <c-c> <c-o>"+y
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <leader>rv :so $MYVIMRC<CR>
 
