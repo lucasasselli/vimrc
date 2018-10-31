@@ -9,3 +9,5 @@ vim/plugged/*
 
 vim/autoload/*
 !vim/autoload/.gitkeep
+
+vim/.netrwhist

@@ -1,8 +1,9 @@
 #!/bin/bash
+
 # Store current dir
 DIR=$(pwd)
 
-# make a symlink to home directory for given dotfile
+# Make a symlink to HOME directory for given dotfile
 function dotlink(){
     local FROM=$HOME/.$1
     local TO=$DIR/$1
@@ -23,6 +24,26 @@ function dotlink(){
     ln -sfn $TO $FROM
 }
 
-dotlink vim
-dotlink vimrc
-curl -fLo vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+function create_links(){
+    dotlink vim
+    dotlink vimrc
+}
+
+
+while true; do
+    read -p "This script will replace your current VIM configuration. Do you want to continue? [y/n] " yn
+    case $yn in
+        [Yy]* ) create_links; break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
+while true; do
+    read -p "Do you want to install plug.vim? [y/n] " yn
+    case $yn in
+        [Yy]* ) curl -fLo vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim; break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
