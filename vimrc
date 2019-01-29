@@ -7,7 +7,31 @@ else
     let $VIMHOME = $HOME."/.vim"
 endif
 
-au CursorHold * checktime
+" PLUGIN {{{
+
+set nocompatible " be iMproved
+silent! call plug#begin('~/.vim/plugged')
+Plug 'chriskempson/base16-vim'        " Colorscheme
+Plug 'lucasax/vip'                    " VHDL entity/component/instance conversion
+Plug 'godlygeek/tabular'              " Text alignment util
+Plug 'tpope/vim-commentary'           " Insert comments
+Plug 'tpope/vim-abolish'              " Naming converter
+Plug 'christoomey/vim-tmux-navigator' " Tmux navigation integration
+Plug 'nachumk/systemverilog.vim'      " Language: SystemVerilog
+" Plug 'lucasax/DS'                     " DesSync
+" if(v:version >= 800)
+"     Plug 'w0rp/ale'                   " Linting engine
+" endif
+call plug#end()
+
+" Base16
+if empty($BASE16SCHEME)
+    colorscheme default
+else
+    let base16colorspace=256
+    colorscheme $BASE16SCHEME
+endif
+"}}}
 
 " VIM SETTINGS {{{
 
@@ -51,10 +75,10 @@ set undoreload=10000
 set directory=$VIMHOME/swap/
 
 " Folding
-set foldmethod=manual
+set foldmethod=marker
 set foldnestmax=10      " max 10 depth
 set foldenable          " don't fold files by default on open
-set foldlevelstart=10   " start with fold level of 1
+set foldlevelstart=0
 
 " Enable syntax omnicompletion
 if exists("+omnifunc")
@@ -85,7 +109,7 @@ set tags=./tags;
 " Leader 
 let mapleader=","                             " Leader
 
-nnoremap <leader>b :w<CR>:make<CR>            " Make
+nnoremap <leader>b :make<CR>                  " Make
 nnoremap <leader>a mz<bar> gg=G'z             " Indent all file
 nnoremap <leader><space> :noh<CR>             " Clear search
 nnoremap <leader>t :tabnew<CR>:E<CR>          " Tab new
@@ -102,7 +126,6 @@ vnoremap k gk
 " Tab navigation
 nnoremap L  :tabnext<CR>
 nnoremap H  :tabprev<CR>
-
 
 " Fast split navigation
 nnoremap <C-j> <C-w><C-j>
@@ -121,6 +144,8 @@ inoremap <C-@> <C-x><C-o>
 " Special char shortcuts
 inoremap <F5> `
 inoremap <F6> ~
+
+nmap Q <nop> " Disable ex-mode
 
 " }}} 
 
@@ -163,35 +188,5 @@ augroup BgHighlight
 augroup END
 
 " }}}
-
-" PLUGIN {{{
-
-set nocompatible " be iMproved
-silent! call plug#begin('~/.vim/plugged')
-Plug 'chriskempson/base16-vim'        " Colorscheme
-Plug 'lucasax/vip'                    " VHDL entity/component/instance conversion
-Plug 'godlygeek/tabular'              " Text alignment util
-Plug 'tpope/vim-commentary'           " Insert comments
-Plug 'christoomey/vim-tmux-navigator' " Tmux navigation integration
-Plug 'nachumk/systemverilog.vim'      " Language: SystemVerilog
-Plug 'lucasax/DS'                     " DesSync
-if(v:version >= 800)
-    Plug 'w0rp/ale'                   " Linting engine
-endif
-call plug#end()
-
-" Base16
-if empty($BASE16SCHEME)
-    colorscheme default
-else
-    let base16colorspace=256
-    colorscheme $BASE16SCHEME
-endif
-
-" ALE
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-
-"}}}
 
 " vim:ft=vim fdm=marker fdl=0
