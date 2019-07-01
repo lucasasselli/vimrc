@@ -1,0 +1,103 @@
+##################################################
+# CONDITIONALS
+##################################################
+# {{{ 
+
+# If
+snippet if
+	if (${1}) begin
+		${0}
+	end
+
+# If/else statements
+snippet ife
+	if (${1}) begin
+		${2}
+	end
+	else begin
+		${1}
+	end
+
+# Else/If
+snippet eif
+	else if (${1}) begin
+		${0}
+	end
+
+# Else
+snippet el
+	else begin
+		${0}
+	end
+# }}}
+
+##################################################
+# LOOPS
+##################################################
+# {{{
+
+# While
+snippet wh
+	while (${1}) begin
+		${0}
+	end
+
+# For
+snippet for
+	for (int ${2:i} = 0; $2 < ${1:count}; $2${3:++}) begin
+		${4}
+	end
+
+# Repeat
+snippet rep
+	repeat (${1}) begin
+		${0}
+	end
+# }}}
+
+##################################################
+# UVM
+##################################################
+
+snippet uvm_info
+	`uvm_info(${1}, "${2}", UVM_LOW);
+
+snippet uvm_error
+	`uvm_error(${1}, "${2}");
+
+
+# Case statement
+snippet case
+	case (${1:/* variable */})
+		${2:/* value */}: begin
+			${3}
+		end
+		default: begin
+			${4}
+		end
+	endcase
+
+# CaseZ statement
+snippet casez
+	casez (${1:/* variable */})
+		${2:/* value */}: begin
+			${3}
+		end
+		default: begin
+			${4}
+		end
+	endcase
+
+# Always block
+snippet al
+	always @(${1:/* sensitivity list */}) begin
+		${0}
+	end
+
+# Module block
+snippet mod
+	module ${1:module_name} (${2});
+		${0}
+	endmodule
+
+# vim: fdm=marker fdl=0

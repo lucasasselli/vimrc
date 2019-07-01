@@ -1,7 +1,5 @@
-let g:vhdl_indent_genportmap = 0
-
-" Comment string
-setlocal commentstring=--\ %s
+let g:verilog_syntax_fold_lst="function,class,task"
+let g:verilog_disable_indent_lst = "preproc,module"
 
 " Xcelium/Incisive
 set errorformat=%*[^\:]\:\ \*E\\,%*[^\ ]\ (%f\\,%l\|%c)\:\ %m
