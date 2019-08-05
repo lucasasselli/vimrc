@@ -56,17 +56,20 @@ snippet rep
 # }}}
 
 ##################################################
-# UVM
+# STRUCTURES
 ##################################################
+# {{{
 
-snippet uvm_info
-	`uvm_info(${1}, "${2}", UVM_LOW);
+snippet task
+	task ${1:/* task name */} (${2});
+		${0}
+	endtask
 
-snippet uvm_error
-	`uvm_error(${1}, "${2}");
+snippet always
+	always @(${1:/* sensitivity list */}) begin
+		${0}
+	end
 
-
-# Case statement
 snippet case
 	case (${1:/* variable */})
 		${2:/* value */}: begin
@@ -77,27 +80,19 @@ snippet case
 		end
 	endcase
 
-# CaseZ statement
-snippet casez
-	casez (${1:/* variable */})
-		${2:/* value */}: begin
-			${3}
-		end
-		default: begin
-			${4}
-		end
-	endcase
+# }}}
 
-# Always block
-snippet al
-	always @(${1:/* sensitivity list */}) begin
-		${0}
-	end
+##################################################
+# UVM
+##################################################
+# {{{
 
-# Module block
-snippet mod
-	module ${1:module_name} (${2});
-		${0}
-	endmodule
+snippet uvm_info
+	\`uvm_info(${1:LOG}, "${2}", UVM_LOW);
+
+snippet uvm_error
+	\`uvm_error(${1:LOG}, "${2}");
+
+# }}}
 
 # vim: fdm=marker fdl=0

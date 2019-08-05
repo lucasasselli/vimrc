@@ -1,1 +1,1 @@
-setlocal omnifunc=jedi#completions
+" setlocal omnifunc=jedi#completions

@@ -21,7 +21,6 @@ Plug 'SirVer/ultisnips'               " Snippets
 Plug 'kien/ctrlp.vim'                 " Fuzzy file finder
 Plug 'lifepillar/vim-mucomplete'      " Autocompletion
 if(v:version >= 800)
-    Plug 'lucasax/DS'                 " DesSync
     Plug 'w0rp/ale'                   " Linting engine
 endif
 
@@ -50,15 +49,16 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 " Ctrl-P
 let g:ctrlp_custom_ignore = 'work$\|syn_trial$\|xcelium.d$\|regressions$\|spyglass$\|*.png\|*.tmp\|*.info\|*.pdf\|ip$'
 let g:ctrlp_match_window = 'bottom,order:ttb'
+let g:ctrlp_extensions = ['tag', 'bookmarkdir']
 
 " Mu Complete
 let g:mucomplete#no_mappings=1
 let g:mucomplete#enable_auto_at_startup = 1
+imap <c-l> <plug>(MUcompleteCycFwd)
+imap <c-h> <plug>(MUcompleteCycBwd)
 let g:mucomplete#chains = {
         \ 'default' : ['c-n', 'ulti', 'path', 'omni']
         \ }
-
-" ALE
 
 " }}}
 
@@ -85,6 +85,7 @@ set autoread              " Reload the file if modified
 set clipboard=unnamedplus " Use sytem clipboard
 set ruler                 " Show cursor position in the status line
 set noerrorbells          " Don't beep
+set t_vb=
 set belloff+=ctrlg        " If Vim beeps during completion
 
 " Indentation setting
@@ -209,45 +210,6 @@ command! Lprev try | lprev | catch | llast | catch | endtry
 
 " OTHER {{{
 
-" Status
-function! StatusRO()
-    if &readonly || !&modifiable
-        return '[RO]'
-    else
-        return ''
-    endif
-endfunction
-
-function! LinterStatus() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-
-    if ale#engine#IsCheckingBuffer(bufnr('')) == 1
-        return "[Lint: ...]"
-    endif
-
-    if(l:counts.total == 0)
-        return ''
-    else
-        return printf(
-                    \   '[Lint: %dW %dE]',
-                    \   all_non_errors,
-                    \   all_errors
-                    \)
-    endif
-
-endfunction
-
-set laststatus=2
-set statusline=
-set statusline+=%0*\ %<%F\ %{StatusRO()}\ %m\ %w\        " File + path
-set statusline+=%0*\ %=                                  " Space
-set statusline+=%0*%{DSStatus()}                     " DesSync Status
-set statusline+=%0*\ %=                              " Space
-set statusline+=%{LinterStatus()}                    " LinterStatus
-
 " Open help horizontally
 autocmd FileType help wincmd L
 
@@ -268,14 +230,13 @@ function! QuickfixToggle()
     endif
 endfunction
 
+" Cool HDL Shortcuts
+function! HDLAssignAuto()
+    " Verilog
+    normal 0f(di)0f.wyef(p
+endfunction
 
-
-" Cursor line highlight for selected window
-" augroup BgHighlight
-"     autocmd!
-"     autocmd WinEnter * set cul
-"     autocmd WinLeave * set nocul
-" augroup END
+nnoremap <leader>hap :call HDLAssignAuto()<CR>
 
 " }}}
 
