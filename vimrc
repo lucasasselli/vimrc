@@ -230,14 +230,6 @@ function! QuickfixToggle()
     endif
 endfunction
 
-" Cool HDL Shortcuts
-function! HDLAssignAuto()
-    " Verilog
-    normal 0f(di)0f.wyef(p
-endfunction
-
-nnoremap <leader>hap :call HDLAssignAuto()<CR>
-
 " }}}
 
 " vim:ft=vim fdm=marker fdl=0
