@@ -17,13 +17,14 @@ Plug 'tpope/vim-abolish'              " Naming converter
 Plug 'christoomey/vim-tmux-navigator' " Tmux navigation integration
 Plug 'vhda/verilog_systemverilog.vim' " Language: SystemVerilog
 Plug 'lucasax/vip'                    " VHDL entity/component/instance conversion
-Plug 'SirVer/ultisnips'               " Snippets
 Plug 'kien/ctrlp.vim'                 " Fuzzy file finder
 Plug 'lifepillar/vim-mucomplete'      " Autocompletion
 if(v:version >= 800)
     Plug 'w0rp/ale'                   " Linting engine
 endif
-
+if has("python")
+    Plug 'SirVer/ultisnips'           " Snippets
+endif
 call plug#end()
 
 " ALE
@@ -51,7 +52,7 @@ let g:ctrlp_custom_ignore = 'work$\|syn_trial$\|xcelium.d$\|regressions$\|spygla
 let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_extensions = ['tag', 'bookmarkdir']
 
-" Mu Complete
+" MuComplete
 let g:mucomplete#no_mappings=1
 let g:mucomplete#enable_auto_at_startup = 1
 imap <c-l> <plug>(MUcompleteCycFwd)
@@ -82,7 +83,7 @@ set relativenumber        " Show line numer in a relative fashion
 set mouse=niv             " Mouse enable in normal mode
 set tabpagemax=100        " Maximum number of tabs
 set autoread              " Reload the file if modified
-set clipboard=unnamedplus " Use sytem clipboard
+" set clipboard=unnamedplus " Use sytem clipboard
 set ruler                 " Show cursor position in the status line
 set noerrorbells          " Don't beep
 set t_vb=
