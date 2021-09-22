@@ -9,21 +9,17 @@ endif
 
 " PLUGIN {{{
 
-set nocompatible " be iMproved
 silent! call plug#begin('~/.vim/plugged')
 Plug 'godlygeek/tabular'              " Text alignment util
 Plug 'tpope/vim-commentary'           " Insert comments
 Plug 'tpope/vim-abolish'              " Naming converter
 Plug 'christoomey/vim-tmux-navigator' " Tmux navigation integration
 Plug 'vhda/verilog_systemverilog.vim' " Language: SystemVerilog
-Plug 'lucasax/vip'                    " VHDL entity/component/instance conversion
-Plug 'kien/ctrlp.vim'                 " Fuzzy file finder
-Plug 'lifepillar/vim-mucomplete'      " Autocompletion
+Plug 'junegunn/fzf'                   " Fuzzy file finder
+Plug 'junegunn/fzf.vim'
+
 if(v:version >= 800)
     Plug 'w0rp/ale'                   " Linting engine
-endif
-if has("python")
-    Plug 'SirVer/ultisnips'           " Snippets
 endif
 call plug#end()
 
@@ -40,26 +36,6 @@ let g:ale_keep_list_window_open = 1
 
 let g:ale_sign_error = '>>'                 " Ale error/Warning symbol
 let g:ale_sign_warning = '--'
-
-" UltiSnips
-let g:UltiSnipsSnippetsDir = $VIMHOME."/snippets/"
-let g:UltiSnipsExpandTrigger="<tab>"                                            
-let g:UltiSnipsJumpForwardTrigger="<tab>"                                       
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"  
-
-" Ctrl-P
-let g:ctrlp_custom_ignore = 'work$\|syn_trial$\|xcelium.d$\|regressions$\|spyglass$\|*.png\|*.tmp\|*.info\|*.pdf\|ip$'
-let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_extensions = ['tag', 'bookmarkdir']
-
-" MuComplete
-let g:mucomplete#no_mappings=1
-let g:mucomplete#enable_auto_at_startup = 1
-imap <c-l> <plug>(MUcompleteCycFwd)
-imap <c-h> <plug>(MUcompleteCycBwd)
-let g:mucomplete#chains = {
-        \ 'default' : ['c-n', 'ulti', 'path', 'omni']
-        \ }
 
 " }}}
 
@@ -83,11 +59,10 @@ set relativenumber        " Show line numer in a relative fashion
 set mouse=niv             " Mouse enable in normal mode
 set tabpagemax=100        " Maximum number of tabs
 set autoread              " Reload the file if modified
-" set clipboard=unnamedplus " Use sytem clipboard
+set clipboard=unnamedplus " Use sytem clipboard
 set ruler                 " Show cursor position in the status line
 set noerrorbells          " Don't beep
-set t_vb=
-set belloff+=ctrlg        " If Vim beeps during completion
+set visualbell            
 
 " Indentation setting
 set shiftwidth=4
@@ -142,6 +117,13 @@ endif
 " Search tags file in parent folder
 set tags=./tags;
 
+" The Silver Searcher
+if executable('ag')
+    set grepprg=ag\ --nogroup\ --nocolor\ --follow
+endif
+
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " }}}
 
